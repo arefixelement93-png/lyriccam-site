@@ -1,0 +1,308 @@
+/* LyricCam site. One shared stylesheet, no external assets, no scripts.
+   Colours and type follow the app (ios/LirikCam/UI/Theme.swift):
+   near-black ink, dark cards, one warm accent, compressed poster headlines,
+   small monospaced labels like a ticket stub. */
+
+:root {
+  --ink: #08080a;
+  --card: #141418;
+  --line: rgba(255, 255, 255, 0.16);
+  --soft: rgba(255, 255, 255, 0.07);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.66);
+  --hot: #ffd166;
+  --on-hot: #15130d;
+  --brand: #ff2d55;
+  --display: "Helvetica Neue", "Roboto Condensed", "Arial Narrow", "Liberation Sans Narrow", Arial, sans-serif;
+  --body: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 88% -120px, rgba(255, 209, 102, 0.10), transparent 70%),
+    var(--ink);
+  background-repeat: no-repeat;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--hot); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; border-radius: 6px; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 12px; z-index: 20; background: var(--hot); color: var(--on-hot); padding: 8px 12px; border-radius: 10px; }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 22px; }
+
+/* ---- Top bar ---- */
+
+.top {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(8, 8, 10, 0.86);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--soft);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 58px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+
+/* Wordmark: same as the app. "Lyric" white, "Cam" in the brand red. */
+.mark {
+  display: inline-flex; align-items: center; height: 32px; padding: 0 13px;
+  border-radius: 999px; background: rgba(255, 255, 255, 0.07);
+  font-weight: 800; font-size: 17px; letter-spacing: -0.2px;
+  color: var(--text); text-decoration: none;
+}
+.mark b { color: var(--brand); font-weight: 800; }
+
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; padding: 9px 10px; border-radius: 999px;
+}
+.nav a:hover { color: var(--text); }
+.nav a[aria-current="page"] { color: var(--on-hot); background: var(--hot); }
+
+/* ---- Language jump ---- */
+
+.langs { display: flex; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+.langs a {
+  display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text); text-decoration: none; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+}
+.langs a:hover { border-color: var(--hot); color: var(--hot); }
+
+/* ---- Document head ---- */
+
+.stub {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--hot); margin: 34px 0 10px;
+}
+
+h1, h2.big {
+  font-family: var(--display); font-weight: 900; font-stretch: condensed;
+  text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.92;
+  font-size: clamp(54px, 15vw, 104px); margin: 0 0 18px; overflow-wrap: break-word;
+}
+h2.big { font-size: clamp(44px, 11vw, 76px); }
+
+.lead { font-size: 19px; line-height: 1.5; color: var(--text); margin: 0 0 8px; max-width: 40em; }
+.note { color: var(--muted); font-size: 15px; }
+
+/* ---- Ticket: the short version ---- */
+
+.ticket {
+  position: relative; display: grid; grid-template-columns: 92px 1fr;
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  margin: 28px 0 8px; overflow: hidden;
+}
+.ticket .tear {
+  display: flex; align-items: center; justify-content: center;
+  border-right: 2px dashed var(--line);
+  background: linear-gradient(180deg, rgba(255, 209, 102, 0.12), rgba(255, 209, 102, 0.02));
+}
+.ticket .tear span {
+  font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--hot); writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
+}
+/* Punched notches where the stub tears off. */
+.ticket::before, .ticket::after {
+  content: ""; position: absolute; left: 81px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink); border: 1px solid var(--line);
+}
+.ticket::before { top: -12px; }
+.ticket::after { bottom: -12px; }
+.ticket ul { list-style: none; margin: 0; padding: 20px 22px; }
+.ticket li { position: relative; padding: 7px 0 7px 22px; font-size: 16px; line-height: 1.45; }
+.ticket li + li { border-top: 1px solid var(--soft); }
+.ticket li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: var(--hot); }
+
+/* ---- Sections ---- */
+
+.sec { padding: 30px 0 4px; border-top: 1px solid var(--soft); margin-top: 30px; }
+.sec h2, .sec h3.h {
+  font-family: var(--display); font-weight: 900; font-stretch: condensed; text-transform: uppercase;
+  font-size: 34px; line-height: 1; letter-spacing: 0; margin: 0 0 14px;
+}
+.sec h2 .no {
+  display: block; font-family: var(--mono); font-stretch: normal; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em;
+  color: var(--hot); margin-bottom: 8px;
+}
+.sec h3 { font-size: 17px; font-weight: 700; margin: 22px 0 6px; }
+.sec p { margin: 0 0 14px; }
+.sec ul, .sec ol { margin: 0 0 14px; padding-left: 20px; }
+.sec li { margin: 0 0 8px; }
+.sec li::marker { color: var(--hot); }
+strong { font-weight: 700; }
+
+.toc { columns: 2; column-gap: 28px; margin: 22px 0 0; padding: 0; list-style: none; font-size: 15px; }
+.toc li { margin: 0 0 7px; break-inside: avoid; }
+.toc a { color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--hot); }
+.toc .n { font-family: var(--mono); font-size: 11px; color: var(--hot); margin-right: 8px; }
+
+/* ---- Data table: who receives what ---- */
+
+.flow { width: 100%; border-collapse: collapse; margin: 6px 0 16px; font-size: 15px; line-height: 1.45; }
+.flow th {
+  text-align: left; font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); padding: 0 12px 8px 0; border-bottom: 1px solid var(--line);
+}
+.flow td { vertical-align: top; padding: 13px 12px 13px 0; border-bottom: 1px solid var(--soft); }
+.flow td:first-child { font-weight: 700; width: 24%; }
+.flow tr:last-child td { border-bottom: 0; }
+
+/* ---- Callout and contact ---- */
+
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; margin: 16px 0;
+}
+.card p:last-child { margin-bottom: 0; }
+.card .k { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hot); margin: 0 0 6px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 26px;
+  border-radius: 999px; background: var(--hot); color: var(--on-hot);
+  font-weight: 700; font-size: 17px; text-decoration: none;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.btn.ghost:hover { border-color: var(--hot); color: var(--hot); filter: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 22px 0 6px; }
+
+/* ---- FAQ ---- */
+
+.faq { border-top: 1px solid var(--soft); }
+.faq details { border-bottom: 1px solid var(--soft); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 16px 34px 16px 0; position: relative;
+  font-weight: 700; font-size: 17px; line-height: 1.35;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; position: absolute; right: 4px; top: 12px;
+  font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--hot);
+}
+.faq details[open] summary::after { content: "\2212"; }
+.faq .a { padding: 0 0 16px; color: var(--muted); }
+.faq .a p { margin: 0 0 10px; }
+.faq .a ol, .faq .a ul { margin: 0 0 10px; padding-left: 20px; }
+.faq .a li { margin: 0 0 6px; }
+.faq .a strong { color: var(--text); }
+.ui { color: var(--text); font-weight: 600; white-space: nowrap; }
+
+/* ---- Home page ---- */
+
+.hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 34px; align-items: center; padding: 14px 0 6px; }
+/* Sized so the longest forced line, "YOUR VIDEO.", fits the text column at every width. */
+.hero h1 { font-size: clamp(46px, 16.5vw, 76px); }
+
+/* Viewfinder: a CSS drawing of the camera screen. Lines are invented, not song lyrics. */
+.finder {
+  position: relative; aspect-ratio: 9 / 16; width: 100%; max-width: 300px; margin: 0 auto;
+  border-radius: 34px; border: 1px solid var(--line); overflow: hidden;
+  background:
+    radial-gradient(60% 34% at 28% 16%, rgba(255, 209, 102, 0.55), transparent 70%),
+    radial-gradient(52% 30% at 78% 22%, rgba(255, 45, 85, 0.34), transparent 72%),
+    radial-gradient(90% 40% at 50% 46%, rgba(255, 255, 255, 0.10), transparent 70%),
+    linear-gradient(180deg, #17131c 0%, #0b0a10 46%, #050506 100%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.finder .rec {
+  position: absolute; left: 14px; top: 14px; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; font-weight: 700; color: #fff;
+  background: rgba(0, 0, 0, 0.45); padding: 5px 9px; border-radius: 999px;
+}
+.finder .rec i { width: 7px; height: 7px; border-radius: 50%; background: var(--brand); display: block; }
+.finder .lines { position: absolute; left: 0; right: 0; bottom: 31%; padding: 0 16px; text-align: center; }
+.finder .lines p { margin: 0; line-height: 1.25; padding: 5px 0; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.42); }
+.finder .lines p.now { font-size: 19px; font-weight: 800; color: #fff; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7); }
+.finder .lines p.next { color: rgba(255, 255, 255, 0.72); }
+.finder .bar { position: absolute; left: 0; right: 0; bottom: 20px; display: flex; align-items: center; justify-content: space-around; padding: 0 12px; }
+.finder .pill { font-size: 10.5px; font-weight: 700; color: #fff; background: rgba(16, 16, 20, 0.72); border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; }
+.finder .shutter { width: 58px; height: 58px; border-radius: 50%; border: 3px solid #fff; display: flex; align-items: center; justify-content: center; }
+.finder .shutter i { width: 24px; height: 24px; border-radius: 7px; background: var(--brand); display: block; }
+.finder .cap { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.5); }
+
+.sec ul.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+.sec ul.grid li { background: var(--card); border: 1px solid var(--soft); border-radius: 18px; padding: 18px 18px 16px; margin: 0; }
+.grid h3 { font-family: var(--display); font-weight: 900; font-stretch: condensed; text-transform: uppercase; font-size: 25px; line-height: 1; margin: 0 0 8px; }
+.grid p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+.grid .k { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; color: var(--hot); margin: 0 0 10px; }
+
+.price { display: flex; flex-wrap: wrap; gap: 10px 30px; align-items: baseline; margin: 6px 0 10px; }
+.price .tier { display: inline-flex; align-items: baseline; gap: 8px; }
+.price b { font-family: var(--display); font-stretch: condensed; font-weight: 900; font-size: 40px; line-height: 1; }
+.price .tier span { color: var(--muted); font-size: 14px; }
+
+/* ---- Malay block divider ---- */
+
+.other { margin-top: 64px; padding-top: 8px; border-top: 2px dashed var(--line); }
+
+/* ---- Footer ---- */
+
+.foot { margin-top: 72px; border-top: 1px solid var(--soft); padding: 26px 0 44px; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+.foot nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 14px; }
+.foot a { color: var(--text); }
+.foot p { margin: 0 0 8px; }
+
+/* ---- Small screens ---- */
+
+@media (max-width: 680px) {
+  body { font-size: 16.5px; }
+  .hero { grid-template-columns: 1fr; gap: 26px; }
+  .finder { max-width: 250px; }
+  .sec ul.grid { grid-template-columns: 1fr; }
+  .toc { columns: 1; }
+  .ticket { grid-template-columns: 1fr; }
+  .ticket .tear { border-right: 0; border-bottom: 2px dashed var(--line); padding: 11px 0; }
+  .ticket .tear span { writing-mode: horizontal-tb; transform: none; }
+  .ticket::before, .ticket::after { left: auto; top: 28px; bottom: auto; }
+  .ticket::before { left: -12px; }
+  .ticket::after { right: -12px; }
+  .ticket ul { padding: 14px 18px; }
+
+  /* Table rows become stacked cards, with the column name above each value. */
+  .flow, .flow tbody, .flow tr, .flow td { display: block; width: 100%; }
+  .flow thead { position: absolute; left: -9999px; }
+  .flow tr { border-bottom: 1px solid var(--line); padding: 12px 0; }
+  .flow tr:last-child { border-bottom: 0; }
+  .flow td { border: 0; padding: 3px 0; }
+  .flow td:first-child { width: 100%; font-size: 16.5px; }
+  .flow td[data-th]::before {
+    content: attr(data-th); display: block; margin-top: 6px;
+    font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* ---- Print: plain black on white for anyone who wants a paper copy ---- */
+
+@media print {
+  html, body { background: #fff !important; color: #000; font-size: 11pt; }
+  .top, .langs, .skip, .actions, .finder { display: none !important; }
+  a { color: #000; }
+  .stub, .sec h2 .no, .toc .n, .card .k, .grid .k, .ticket .tear span { color: #000; }
+  .note, .faq .a, .grid p, .foot, .toc a, .flow th, .price .tier span { color: #333; }
+  .ticket, .card, .grid li { background: #fff; border-color: #999; }
+  .ticket::before, .ticket::after { display: none; }
+  .ticket .tear { background: none; border-color: #999; }
+  .faq details { break-inside: avoid; }
+  .faq .a strong, .ui, .foot a { color: #000; }
+}
